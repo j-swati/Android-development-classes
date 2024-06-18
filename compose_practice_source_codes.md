@@ -49,6 +49,11 @@ fun GreetingPreview() {
 }
 ```
 
+### Output
+
+![Output Image](screenshots/greeting.png)
+
+
 ### App lifecycle
 
 ```markdown
@@ -128,6 +133,13 @@ fun GreetingPreview() {
     }
 }
 ```
+
+### Output
+
+![Output Image](screenshots/lifecycle/lifecycle-1.png)
+![Output Image](screenshots/lifecycle/lifecycle-2.png)
+![Output Image](screenshots/lifecycle/lifecycle-3.png)
+![Output Image](screenshots/lifecycle/lifecycle-4.png)
 
 ### Text modifiers
 
@@ -314,6 +326,7 @@ fun DefaultPreview() {
 }
 
 ```
+![Output Image](screenshots/text-modifiers.png)
 
 ### Layouts
 
@@ -477,6 +490,7 @@ fun MainContentPreview() {
 }
 
 ```
+![Output Image](screenshots/layout.png)
 
 ### Buttons
 
@@ -570,6 +584,7 @@ fun MainContentPreview() {
 }
 
 ```
+![Output Image](screenshots/button.png)
 
 ### Dialog
 
@@ -654,3 +669,5 @@ fun MainContentPreview() {
     }
 }
 ```
+
+![Output Image](screenshots/dialog.png)
