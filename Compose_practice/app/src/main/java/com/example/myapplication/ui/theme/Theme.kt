@@ -17,10 +17,32 @@ private val LightGreenColorScheme = lightColorScheme(
     onSurface = Color.Black,
 )
 
+private val DarkGreenColorScheme = darkColorScheme(
+    primary = Color(0xFF388E3C),
+    onPrimary = Color.Black,
+    primaryContainer = Color(0xFF1B5E20),
+    onPrimaryContainer = Color.White,
+    secondary = Color(0xFF689F38),
+    onSecondary = Color.Black,
+    background = Color(0xFF303030),
+    onBackground = Color.White,
+    surface = Color(0xFF424242),
+    onSurface = Color.White,
+)
+
 @Composable
-fun MyApplicationTheme(content: @Composable () -> Unit) {
+fun MyApplicationTheme(
+    darkTheme: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) {
+        DarkGreenColorScheme
+    } else {
+        LightGreenColorScheme
+    }
+
     MaterialTheme(
-        colorScheme = LightGreenColorScheme,
+        colorScheme = colors,
         typography = Typography,
         content = content
     )
