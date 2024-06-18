@@ -1,77 +1,92 @@
-//MainActivity.kt
-
 package com.example.myapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import androidx.compose.ui.Alignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var isDarkTheme by remember { mutableStateOf(false) }
-
-            MyApplicationTheme(darkTheme = isDarkTheme) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text(text = if (isDarkTheme) "Dark Theme" else "Light Theme")
-                        Switch(
-                            checked = isDarkTheme,
-                            onCheckedChange = { isDarkTheme = it },
-                            thumbContent = if (isDarkTheme) {
-                                {
-                                    Icon(
-                                        imageVector = Icons.Filled.Check,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                                    )
-                                }
-                            } else {
-                                null
-                            }
-                        )
-                    }
-                }
+            MyApplicationTheme {
+                MyApp()
             }
         }
     }
 }
 
 @Composable
-fun SwitchWithIconExample() {
-    var checked by remember { mutableStateOf(true) }
+fun MyApp() {
+    Column {
+        HorizontalDividerExample()
+        Spacer(modifier = Modifier.height(16.dp)) // Adding spacing
+        VerticalDividerExample()
+    }
+}
 
-    Switch(
-        checked = checked,
-        onCheckedChange = { checked = it },
-        thumbContent = if (checked) {
-            {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = null,
-                    modifier = Modifier.size(SwitchDefaults.IconSize)
-                )
-            }
-        } else {
-            null
-        }
+@Composable
+fun HorizontalDividerExample() {
+    Column(
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
+    ) {
+        Text("First item in list")
+        HorizontalDivider(thickness = 2.dp)
+        Text("Second item in list")
+    }
+}
+
+@Composable
+fun VerticalDividerExample() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceEvenly
+    ) {
+        Text("First item in row")
+        VerticalDivider(color = Color.Gray) // Adjust color according to your theme
+        Text("Second item in row")
+    }
+}
+
+@Composable
+fun HorizontalDivider(thickness: Dp, color: Color = Color.Gray) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(thickness)
+            .background(color)
     )
+}
+
+@Composable
+fun VerticalDivider(thickness: Dp = 2.dp, color: Color = Color.Gray) {
+    Box(
+        modifier = Modifier
+            .width(thickness)
+            .fillMaxHeight()
+            .background(color)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    MyApplicationTheme {
+        MyApp()
+    }
 }
