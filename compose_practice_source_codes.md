@@ -1987,3 +1987,271 @@ fun ProductCard(product: String, onClick: () -> Unit) {
 ![Output Image](screenshots/nav-screen-4.png)
 ![Output Image](screenshots/nav-screen-5.png)
 
+### Basic MVVM implementation
+
+```kotlin
+//MainActivity.kt
+
+package com.example.myapplication
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            TaskListScreen()
+        }
+    }
+}
+
+```
+
+```kotlin
+// Task.kt
+
+package com.example.myapplication
+
+data class Task(
+    val id: Long,
+    val title: String,
+    val description: String
+)
+
+```
+
+```kotlin
+// TaskViewModel.kt
+
+package com.example.myapplication
+
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+
+class TaskViewModel : ViewModel() {
+
+    // Simulated data source
+    private val tasks = mutableStateListOf(
+        Task(1, "Task 1", "Description for Task 1"),
+        Task(2, "Task 2", "Description for Task 2"),
+        Task(3, "Task 3", "Description for Task 3")
+    )
+
+    // Expose the tasks as immutable State
+    fun getTasks(): List<Task> {
+        return tasks
+    }
+
+    // Function to add a new task
+    fun addTask(task: Task) {
+        tasks.add(task)
+    }
+}
+
+```
+
+```kotlin
+// TaskListScreen.kt
+
+package com.example.myapplication
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+@Composable
+fun TaskListScreen(viewModel: TaskViewModel = viewModel()) {
+    val tasks = viewModel.getTasks()
+
+    Column {
+        Text(text = "Task List")
+
+        LazyColumn {
+            items(tasks) { task ->
+                TaskListItem(task = task)
+            }
+        }
+    }
+}
+
+@Composable
+fun TaskListItem(task: Task) {
+    Text(text = "${task.title}: ${task.description}")
+}
+
+```
+
+### OUTPUT
+![Output Image](screenshots/mvvm.png)
+
+### Generic example
+
+```kotlin
+package com.example.myapplication
+
+class Student<T> (text : T){
+    var x = text
+    init{
+        println(x)
+    }
+}
+fun main(args: Array<String>){
+    var name: Student<String> = Student<String>("Swati")
+    var age: Student<Int> = Student<Int>(21)
+}
+
+```
+
+### OUTPUT
+![Output Image](screenshots/generics.png)
+
+### UI replication
+
+```kotlin
+package com.example.myapplication
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.theme.MyApplicationTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MainScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(Color(0xFFEFF4FA))
+                .padding(16.dp,)
+        ) {
+            Text(
+                text = "Jetpack Compose",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xFF1B5F8C),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal=8.dp,vertical=0.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(0.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.jetpack_logo),
+                    contentDescription = "jetpack logo",
+                    modifier = Modifier
+                        .padding(0.dp) // Padding for the Image inside the Box
+                )
+            }
+            Text(
+                text = "Login",
+                fontSize = 24.sp,
+                color = Color(0xFF006134),
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = "",
+                onValueChange = { /*TODO*/ },
+                label = { Text("Email ID or Mobile Number") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = "",
+                onValueChange = { /*TODO*/ },
+                label = { Text("Password") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(8.dp)
+            )
+            Text(
+                text = "Forgot Password ?",
+                fontSize = 10.sp,
+                color = Color(0xFF185E4B),
+                modifier = Modifier
+                    .clickable { /* TODO: Implement Forgot Password action */ }
+                    .padding(8.dp)
+                    .padding(8.dp)
+                    .align(Alignment.End) // Align to the right
+            )
+            Button(
+                onClick = { /* TODO: Implement Login action */ },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text(
+                    text = "Login",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White
+                )
+            }
+        }
+        Text(
+            text = "Don’t have an account? Register",
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 16.dp)
+                .padding(8.dp)
+        )
+    }
+}
+
+```
+
+### OUTPUT
+![Output Image](screenshots/ui-replication.png)
