@@ -373,3 +373,7 @@ class MainActivity : ComponentActivity() {
 - Set the content of the activity to `MyApp`, passing the product list from ViewModel to `ProductList`..
 - **`viewModel.products.observeAsState(emptyList())`**: Observes the `products` LiveData from `ProductViewModel` and provides its current state (`List<Product>`) as a state value (`products`). If `products` LiveData updates, `products` state will reflect those changes.
 - **`ProductList(products = products, onItemClick = { /* Handle item click */ })`**: Passes the observed `products` state to the `ProductList` composable, which will display the list of products.
+
+
+### OUTPUT 
+![Output Image](../screenshots/list_products_api.png)
