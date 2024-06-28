@@ -2313,3 +2313,89 @@ fun WebViewScreen(url: String) {
 
 ## OUTPUT
 ![Output Image](screenshots/webview.png)
+
+
+## Shared Persistence
+
+```kotlin
+// MainActivity.kt
+
+package com.example.myapplication
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            var userName by remember { mutableStateOf("") }
+            var savedUserName by remember { mutableStateOf("") }
+
+            LaunchedEffect(Unit) {
+                savedUserName = SharedPreferencesManager.getUserName(this@MainActivity) ?: ""
+            }
+
+            Column(modifier = Modifier.padding(16.dp)) {
+                TextField(
+                    value = userName,
+                    onValueChange = { userName = it },
+                    label = { Text("Enter Name") }
+                )
+                Button(onClick = {
+                    SharedPreferencesManager.saveUserName(this@MainActivity, userName)
+                    savedUserName = userName
+                }) {
+                    Text("Save Name")
+                }
+                Text("Saved Name: $savedUserName")
+            }
+        }
+    }
+}
+
+```
+
+```kotlin
+// SharedPreferencesManager.kt
+
+package com.example.myapplication
+
+import android.content.Context
+import android.content.SharedPreferences
+
+object SharedPreferencesManager {
+    private const val PREF_NAME = "app_prefs"
+    private const val USER_NAME_KEY = "user_name"
+
+    private fun getPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun saveUserName(context: Context, userName: String) {
+        val editor = getPreferences(context).edit()
+        editor.putString(USER_NAME_KEY, userName)
+        editor.apply()
+    }
+
+    fun getUserName(context: Context): String? {
+        return getPreferences(context).getString(USER_NAME_KEY, null)
+    }
+}
+
+```
+
+## OUTPUT
+
+![Output Image](screenshots/shared-peristence-1.png)
+![Output Image](screenshots/shared-peristence-2.png)
