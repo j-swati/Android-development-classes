@@ -2255,3 +2255,61 @@ fun MainScreen() {
 
 ### OUTPUT
 ![Output Image](screenshots/ui-replication.png)
+
+## Webview in your Jetpack project
+
+```kotlin
+// AndroidManifest.xml
+
+<uses-permission android:name="android.permission.INTERNET" />
+
+// MainActivity.kt
+
+package com.example.myapplication
+
+import android.os.Bundle
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.myapplication.ui.theme.MyApplicationTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    WebViewScreen(url = "https://youtu.be/4LOEU1MiwQQ")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun WebViewScreen(url: String) {
+    AndroidView(factory = { context ->
+        WebView(context).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            settings.useWideViewPort = true
+            settings.loadWithOverviewMode = true
+            webViewClient = WebViewClient()
+            webChromeClient = WebChromeClient()
+            loadUrl(url)
+        }
+    }, update = { webView ->
+        webView.loadUrl(url)
+    })
+}
+
+```
+
+## OUTPUT
+![Output Image](screenshots/webview.png)
