@@ -2397,5 +2397,7 @@ object SharedPreferencesManager {
 
 ## OUTPUT
 
-![Output Image](screenshots/shared-peristence-1.png)
 ![Output Image](screenshots/shared-peristence-2.png)
+![Output Image](screenshots/shared-peristence-1.png)
+
+
