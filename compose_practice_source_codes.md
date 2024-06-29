@@ -2404,6 +2404,7 @@ object SharedPreferencesManager {
 ## Url redirection
 
 ```kotlin
+
 // MainActivity.kt
 
 package com.example.myapplication
