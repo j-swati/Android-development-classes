@@ -2401,3 +2401,82 @@ object SharedPreferencesManager {
 ![Output Image](screenshots/shared-peristence-1.png)
 
 
+## Url redirection
+
+```kotlin
+// MainActivity.kt
+
+package com.example.myapplication
+
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.theme.MyApplicationTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                MainScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun MainScreen() {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        val annotatedString = buildAnnotatedString {
+            append("Click ")
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
+                append("here")
+            }
+            append(" to open URL in browser")
+        }
+
+        Text(
+            text = annotatedString,
+            fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.clickable {
+                openUrlInBrowser(context, "https://ingenious-tech.com/")
+            }
+        )
+    }
+}
+
+fun openUrlInBrowser(context: android.content.Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(intent)
+}
+
+```
+
+## OUTPUT
+
+![Output Image](screenshots/url-redirection-1.png)
+![Output Image](screenshots/url-redirection-2.png)
